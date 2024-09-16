@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Registration Form</title>
+
+  <!-- Link to External CSS -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h2>Vendor Registration</h2>
+    <form id="vendorForm">
+      <div class="form-control">
+        <input type="text" id="name" placeholder=" " required>
+        <label for="name">Full Name</label>
+      </div>
+
+      <div class="form-control">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">Email Address</label>
+      </div>
+
+      <div class="form-control">
+        <input type="text" id="shopName" placeholder=" " required>
+        <label for="shopName">Shop Name</label>
+      </div>
+
+      <div class="form-control">
+        <input type="number" id="space" placeholder=" " required>
+        <label for="space">Space Required (in sq ft)</label>
+      </div>
+
+      <div class="form-control">
+        <select id="category" required>
+          <option value="" selected>Select category</option>
+          <option value="Food">Food</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Accessories">Accessories</option>
+          <option value="Other">Other</option>
+        </select>
+        <!-- <label for="category">Business Category</label> -->
+      </div>
+
+      <div class="form-control">
+        <textarea id="description" rows="4" placeholder=" " required></textarea>
+        <label for="description">Business Description</label>
+      </div>
+
+      <button type="submit">Submit</button>
+      <div id="thankYouMessage" class="thank-you-message">Thank you for registering!</div>
+    </form>
+  </div>
+
+  <!-- JavaScript for Form Submission -->
+  <script>
+    document.getElementById('vendorForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        shopName: document.getElementById('shopName').value,
+        space: document.getElementById('space').value,
+        category: document.getElementById('category').value,
+        description: document.getElementById('description').value,
+      };
+
+      fetch('http://localhost:3000/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('thankYouMessage').classList.add('show');
+        setTimeout(() => {
+          document.getElementById('thankYouMessage').classList.remove('show');
+        }, 3000);
+        document.getElementById('vendorForm').reset();
+      })
+      .catch(error => console.error('Error:', error));
+    });
+  </script>
+</body>
+</html>
